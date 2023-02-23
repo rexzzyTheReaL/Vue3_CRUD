@@ -11,7 +11,7 @@
         <div id="app">
             <div>
                 <div>
-                    <input placeholder="請輸入查詢員編" v-model="inputValue">&nbsp;
+                    <input placeholder="請輸入查詢員編" v-model="inputValue" :disabled="isShowEdit || isShowInsert">&nbsp;
                     <input style="width: 70px" type="button" @click="handleInsert" value="新增員工">
                 </div>
                <hr>
