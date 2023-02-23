@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+        <div id="app">
+            <div>
+                <div>
+                    <input placeholder="請輸入查詢員編" v-model="inputValue">&nbsp;
+                    <input style="width: 70px" type="button" @click="handleInsert" value="新增員工">
+                </div>
+               <hr>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>員編</th>
+                            <th>姓名</th>
+                            <th>分機</th>
+                            <th>功能</th>
+                        </tr>
+                    </thead>
+                    <tbody v-for="(user,index) in searchEmpno">
+                        <tr>
+                            <td>{{user.empNo}}</td>
+                            <td>{{user.name}}</td>
+                            <td>{{user.tel}}</td>
+                            <td>
+                                <button @click="handleEdit(index)">編輯</button> &nbsp;
+                                <button @click="handleDelete(index)">刪除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div><hr>
+            
+            <div v-show="isShowEdit">
+                <Employee-Edit :arr="arr" @do-save="saveData(arr[0].id)"></Employee-Edit>
+            </div>
+            <div v-show="isShowInsert">
+                <employee-insert :arr="arr" @do-insert="saveData"></employee-insert>
+            </div>
+            <!-- <div v-for="user in users">{{user.name}}</div> -->
+        </div>
+        
+        <script type="module">
+            import {createApp, ref, reactive, watch, computed, onMounted} from './vue.js'
+            import EmployeeEdit from './EmployeeEdit.js'
+            import EmployeeInsert from './EmployeeInsert.js'
+
+            const app = {
+                components:{
+                    EmployeeEdit,
+                    EmployeeInsert
+                },
+                setup() {             
+                const users = reactive([
+                    {
+                        empNo:'FB6693',
+                        name:'猴哥哥',
+                        tel:'1661',
+                    },
+                    {
+                        empNo:'FG1945',
+                        name:'陳小春',
+                        tel:'1662',
+                    },
+                    {
+                        empNo:'FG1895',
+                        name:'伍佰',
+                        tel:'1663',
+                    }                         
+                ])
+
+                const inputValue = ref('')
+                
+                const searchEmpno = computed(()=>{
+                    console.log(users)
+                    return users.filter((m)=>{
+                        return(
+                            m.empNo.toLowerCase().indexOf(inputValue.value.toLowerCase()) != -1
+                        )
+                    })
+                })
+
+                const handleDelete = (id) => {
+                    users.splice(id,1)    
+                    console.log(users)             
+                }
+
+                //store the edited item
+                const arr = reactive([{
+                    empNo:'',
+                    name:'',
+                    tel:'',
+                }])
+
+                //edit zone state
+                const isShowEdit = ref(false)
+                const isShowInsert = ref(false)
+                const handleEdit = (id) => { 
+                    isShowEdit.value = true
+                    isShowInsert.value = false
+                    arr.length = 0 
+                    const editedUser = 
+                    {
+                        id,
+                        empNo:users[id].empNo,
+                        name:users[id].name,
+                        tel:users[id].tel
+                    }      
+                    arr.push(editedUser)
+                    console.log(arr)
+                }
+                //save data
+                const saveData = (id) => {
+                    if(id){
+                        users[id].name = arr[0].name
+                        users[id].tel = arr[0].tel
+                        isShowEdit.value = false
+                        console.log(users)
+                    }
+                    else{
+                        isShowInsert.value = false
+                        console.log(users)
+                        users.push(arr[0])                     
+                    }
+                    
+                }   
+                //insert data
+                const handleInsert = () => {
+                    arr[0].empNo = ''
+                    arr[0].name = ''
+                    arr[0].tel = ''
+                    isShowEdit.value = false
+                    isShowInsert.value = true
+                    
+                    console.log(arr)
+                }
+
+                return {
+                    users,
+                    inputValue,
+                    searchEmpno,
+                    handleDelete,
+                    handleEdit,
+                    handleInsert,
+                    arr,
+                    isShowEdit,
+                    isShowInsert,
+                    saveData        
+                }
+                
+            },
+        }
+        createApp(app).mount('#app')
+        </script>
+
+         <style>
+            table {
+              width: 100%;
+              color: black;
+              border-collapse: collapse;
+            }
+            td,th {
+              text-align: left;
+              border: 1px solid gray;
+              padding: 10px;
+            }
+            .insert{
+                margin-right: 0;
+            }
+          </style>
+</body>
+</html>
