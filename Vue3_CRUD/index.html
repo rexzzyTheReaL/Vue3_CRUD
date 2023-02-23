@@ -102,6 +102,7 @@
                 //edit zone state
                 const isShowEdit = ref(false)
                 const isShowInsert = ref(false)
+
                 const handleEdit = (id) => { 
                     isShowEdit.value = true
                     isShowInsert.value = false
@@ -118,14 +119,20 @@
                 }
                 //save data
                 const saveData = (id) => {
-                    if(id){
+                    if(id >= 0){
+                        delete arr[0].id
                         users[id].name = arr[0].name
-                        users[id].tel = arr[0].tel
+                        users[id].tel = arr[0].tel    
                         isShowEdit.value = false
                         console.log(users)
                     }
                     else{
+                        if(arr[0].empNo.replaceAll(' ','')<=0){
+                            alert('請輸入員編')
+                            return
+                        }
                         isShowInsert.value = false
+                        delete arr[0].id
                         console.log(users)
                         users.push(arr[0])                     
                     }
