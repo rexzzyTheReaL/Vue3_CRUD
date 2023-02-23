@@ -1,6 +1,6 @@
 # Vue3_CRUD
-Use vue3 implement a simple ver. CRUD</br>
-official doc. : <a href="https://vuejs.org/guide/introduction.html">Vue.js</a></br>
+Use vue3 implement a simple version CRUD </br>
+official doc <a href="https://vuejs.org/guide/introduction.html">Vue.js</a></br>
 Essential know-how in this demo-</br>
 
 ## 1.Using Vue from CDN
