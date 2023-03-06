@@ -13,7 +13,7 @@
             <div class="container">
                 <div>
                     <input placeholder="請輸入查詢員編" v-model="inputValue" :disabled="isShowEdit || isShowInsert">&nbsp;
-                    <input type="button" class="btn btn-primary btn-sm" @click="handleInsert(users.length)" value="新增員工" :disabled="isShowInsert">
+                    <input type="button" class="btn btn-primary btn-sm" @click="handleInsert(users.length)" value="新增員工" :disabled="isShowInsert || inputValue != ''">
                 </div><br>
                
                 <table class="table table-hover table-light" style="text-align: center;">
